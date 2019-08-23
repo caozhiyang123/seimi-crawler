@@ -1,0 +1,83 @@
+server:
+  port: ${port} #鏈嶅姟绔彛
+
+spring:
+  application:
+    name: com.baifenjy.seimi
+# = = = = = = = = = = = = = = = == = = = = = = = = = == = = = = = = = = = = = = = =
+
+  #鏁版嵁搴撻厤缃�
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+    username: root
+    password: MyNewPass
+    maxActive: 20
+    maxWait: 60000
+    maxIdle: 8
+    minIdle: 8
+    initialSize: 10
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+    filters: stat,wall,log4j
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+    
+  jpa:
+    hibernate:
+#      ddl-auto: create #ddl-auto:璁句负create琛ㄧず姣忔閮介噸鍐欏缓琛�
+      ddl-auto: update # ddl-auto:璁句负update琛ㄧず姣忔閮戒笉浼氶噸鍐欏缓琛�
+#      naming-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl  #榛樿鏍峰紡   org.hibernate.cfg.ImprovedNamingStrategy # org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl 鍙栨秷鑷姩灏嗛┘宄板懡鍚嶈浆涓轰笅鍒掔嚎褰㈠紡   
+    show-sql: true
+    database: MYSQL
+    databasePlatform: "org.hibernate.dialect.MySQL5InnoDBDialect"
+########################################################
+
+eureka:
+  client:
+    registerWithEureka: true #鏄惁灏嗚嚜宸辨敞鍐屽埌eureka鏈嶅姟涓紝鏈韩灏辨槸鎵�鏈夋棤闇�娉ㄥ唽
+    fetchRegistry: true #鏄惁浠巈ureka鏈嶅姟涓幏鍙栦俊鎭�
+    serviceUrl: #Eureka瀹㈡埛绔笌Eureka鏈嶅姟绔氦浜掑湴鍧�
+      defaultZone: http://oriki:1234@127.0.0.1:6868/eureka/,http://oriki:1234@127.0.0.1:6869/eureka/
+      # http://127.0.0.1:6868/eureka/ ,http://127.0.0.1:6869/eureka/
+    #eurekaServerConnectionTimeoutSeconds: 60
+    #eurekaServerReadTimeoutSeconds: 60
+  instance:
+    prefer-ip-address: true #灏嗚嚜宸辩殑ip娉ㄥ唽鍒癊ureka鏈嶅姟涓�
+    ip-address: 127.0.0.1
+    instance-id: ${spring.application.name}:${server.port} #鎸囧畾瀹炰緥Id
+    #lease-expiration-duration-in-seconds: 30  #缁害鏇存柊鏃堕棿闂撮殧(榛樿30绉�)
+    #lease-renewal-interval-in-seconds: 90 #缁害鍒版湡鏃堕棿锛堥粯璁�90绉掞級
+    #leaseRenewalIntervalInSecondes: 90 #蹇冭烦鏃堕棿
+#  server:
+#    enable-self-preservation: false #绂佺敤鑷垜淇濇姢妯″紡
+#    eviction-interval-timer-in-ms: 60000 #娓呯悊闂撮殧锛堝崟浣嶆绉掞紝榛樿鏄�60*1000锛�
+
+###########################################################################################
+logging:
+  level:
+    root: info
+# org.springframework.web:DEBUG
+  file: /logs/log/seimi.log
+
+###########################################################################################
+seimi:
+  crawler:
+    enabled: true
+# 指定要发起start请求的crawler的name
+    names: basic_save
+#    seimi-agent-host: xx
+#    seimi-agent-port: xx
+
+#开启分布式队列
+#    enable-redisson-queue: true
+#自定义bloomFilter预期插入次数，不设置用默认值 （）
+#    bloom-filter-expected-insertions: 
+#自定义bloomFilter预期的错误率，0.001为1000个允许有一个判断错误的。不设置用默认值（0.001）
+#    bloom-filter-false-probability: 
